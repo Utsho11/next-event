@@ -14,11 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { categories } from "@/constant/catagories";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { addEvent } from "@/services/event-services";
 import { useAuth } from "@/context/AuthContext";
+import { categories } from "../home/EventCatagories";
+import { toast } from "sonner";
 
 const AddEventForm = () => {
   const { user } = useAuth();
@@ -35,7 +36,7 @@ const AddEventForm = () => {
     e.preventDefault();
 
     if (!user?.email) {
-      alert("Please log in to create an event");
+      toast.warning("Please log in to create an event");
       return;
     }
 
@@ -55,18 +56,27 @@ const AddEventForm = () => {
 
     // Basic validation
     if (!eventName || !category || !location) {
-      alert("Please fill all required fields");
+      toast.warning("Please fill all required fields");
       return;
     }
 
     if (Number(ticketPrice) < 0) {
-      alert("Price must be positive");
+      toast.warning("Price must be positive");
       return;
     }
 
     try {
       await addEvent(eventData);
-      alert("Event created successfully!");
+      toast.success(
+        <p className="text-green-500">Event created successfully!</p>,
+        {
+          description: (
+            <p className="text-gray-400">
+              Created At: {new Date().toLocaleString()}
+            </p>
+          ),
+        },
+      );
 
       setEventName("");
       setEventDescription("");
@@ -77,7 +87,7 @@ const AddEventForm = () => {
       setDate(new Date());
     } catch (error) {
       console.log(error);
-      alert("Failed to create event");
+      toast.error("Failed to create event");
     }
   };
 
@@ -108,7 +118,9 @@ const AddEventForm = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="eventShortDescription">Event Short Description</Label>
+                <Label htmlFor="eventShortDescription">
+                  Event Short Description
+                </Label>
                 <Textarea
                   id="eventShortDescription"
                   placeholder="Enter a short description for the event"

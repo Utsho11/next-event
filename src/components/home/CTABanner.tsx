@@ -16,7 +16,7 @@ const CTABanner = () => {
         className="w-full h-full obiect-cover"
       />
       <div className="absolute left-0 bottom-25 w-full">
-        <h1 className=" text-white text-3xl font-bold text-center">
+        <h1 className=" text-white text-xl md:text-3xl font-bold text-center">
           Start Hosting Your Own <br />
           Events Today
         </h1>

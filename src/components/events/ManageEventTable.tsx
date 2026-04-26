@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Table,
@@ -18,49 +18,47 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { PlusCircle, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { useAuth } from "@/context/AuthContext";
-import {
-  deleteEvent,
-  getMyEvents,
-  type EventData,
-} from "@/services/event-services";
+import { deleteEvent, type EventData } from "@/services/event-services";
 import Image from "next/image";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { refresh } from "next/cache";
 import Link from "next/link";
+import { toast } from "sonner";
 
-export default function ManageEventsTable() {
-  const { user } = useAuth();
-  const [events, setEvents] = useState<EventData[]>([]);
+interface ManageEventsTableProps {
+  setEvents: (callback: (prevEvents: EventData[]) => EventData[]) => void;
+  events: EventData[];
+}
+
+export default function ManageEventsTable({
+  setEvents,
+  events,
+}: ManageEventsTableProps) {
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
-
-  useEffect(() => {
-    if (!user?.email) return;
-
-    const fetchEvents = async () => {
-      const data = await getMyEvents(user?.email);
-
-      setEvents(data as EventData[]);
-    };
-
-    fetchEvents();
-  }, [user]);
 
   const handleDelete = async (id: string) => {
     try {
       await deleteEvent(id);
+      toast.success(
+        <p className="text-green-500">Event Deleted successfully!</p>,
+        {
+          description: (
+            <p className="text-gray-400">
+              Delete at: {new Date().toLocaleString()}
+            </p>
+          ),
+        },
+      );
 
       setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
     } catch (error) {
       console.log(error);
-      alert("Failed to delete event");
+      toast.error("Failed to delete event");
     }
   };
 
@@ -69,7 +67,7 @@ export default function ManageEventsTable() {
       <div className="flex items-center justify-between px-6 py-4 border-b">
         <h1 className="text-2xl font-semibold">Published Events</h1>
         <Link href={"/events/add"}>
-          <Button className="bg-linear-to-r from-[#3525CD] to-[#831ADA]">
+          <Button className="bg-linear-to-r from-[#3525CD] to-[#831ADA] text-white">
             <PlusCircle />
             Add Event
           </Button>

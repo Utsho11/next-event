@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/navbar/Navbar";
 import Providers from "@/providers";
 import Footer from "@/components/layout/Footer";
+import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
   subsets: ["latin"],
 });
 
@@ -27,21 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className={` h-full ${inter.className}`}>
       <body className="min-h-full mx-auto md:max-w-7xl flex flex-col">
         <Providers>
           <div className="sticky top-0 z-10">
             <Navbar />
           </div>
-          <div className="">{children}</div>
-          <div className=''>
-            <Footer/>
+          <div className="grow">{children}</div>
+          <div className="">
+            <Footer />
           </div>
+          <Toaster position="top-center"/>
         </Providers>
-
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { demoEvents } from "@/constant/demoData";
 import { db } from "@/lib/firebase.config";
+import type { ContactPayload } from "@/types";
 import {
   addDoc,
   collection,
@@ -131,3 +132,18 @@ export const seedEvents = async () => {
   }
 };
 
+export const createContactMessage = async (payload: ContactPayload) => {
+  if (!payload.name || !payload.email || !payload.message) {
+    throw new Error("Missing required fields");
+  }
+
+  console.log(payload);
+  
+
+  const docRef = await addDoc(collection(db, "contactMessages"), {
+    ...payload,
+    createdAt: serverTimestamp(),
+  });
+
+  return docRef.id;
+};

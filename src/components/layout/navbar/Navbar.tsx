@@ -12,7 +12,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -41,42 +40,52 @@ const Navbar = () => {
                   <Avatar>
                     <AvatarImage
                       src={user.photoURL || "https://github.com/shadcn.png"}
-                      alt="@shadcn"
+                      alt="user avatar"
                     />
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-40" align="start">
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>My Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/dashboard"}>My Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/setting"}>Settings</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem>
                       <Link href={"/events/manage"}>Manage Events</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSub></DropdownMenuSub>
                     <DropdownMenuItem>
                       <Link href={"/events/add"}>Publish Event</Link>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>GitHub</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"https://github.com/Utsho11/next-event"}>
+                        GitHub
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/contact"}>Support</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
               <Button
                 variant={"destructive"}
                 size={"icon"}
+                className="text-red-400"
                 onClick={() => logoutUser()}
               >
                 <LogOut />
               </Button>
             </div>
           ) : (
-            <div className="">
+            <div className="flex gap-5">
               <Link href={"/login"}>
                 <Button
                   className="hidden rounded-full sm:inline-flex"

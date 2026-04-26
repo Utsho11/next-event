@@ -1,3 +1,4 @@
+"use client";
 import type { EventData } from "@/services/event-services";
 
 import Image from "next/image";
@@ -7,8 +8,41 @@ import { CalendarDays, MapPin, Ticket, Users, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { buyTicket } from "@/lib/ticket-storage";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { toast } from "sonner";
 
 const EventDetails = ({ event }: { event: EventData }) => {
+  const [quantity, setQuantity] = useState(1);
+  const [open, setOpen] = useState(false);
+
+  const handleBuy = () => {
+    if (quantity <= 0) return;
+
+    buyTicket(event, quantity);
+
+    toast.success("Ticket purchased!", {
+      description: (
+        <p className="text-gray-400">
+          Purchased At: {new Date().toLocaleString()}
+        </p>
+      ),
+    });
+
+    setOpen(false);
+    setQuantity(1);
+  };
+
   const eventDate = new Date(event.date);
   return (
     <div className="mx-auto max-w-7xl">
@@ -127,13 +161,57 @@ const EventDetails = ({ event }: { event: EventData }) => {
               </div>
             </div>
 
-            <Button className="h-12 w-full bg-linear-to-r from-[#3525CD] to-[#831ADA] font-semibold text-white">
-              Get Tickets Now
-            </Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full h-12 bg-linear-to-r from-[#3525CD] to-[#831ADA] text-white">
+                  Get Tickets Now
+                </Button>
+              </DialogTrigger>
 
-            <p className="text-center text-sm text-slate-500">
-              Only 42 spots remaining!
-            </p>
+              <DialogContent className="sm:max-w-md bg-[#E5EEFF]">
+                <DialogHeader>
+                  <DialogTitle>Buy Tickets</DialogTitle>
+                </DialogHeader>
+
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    {event.eventName}
+                  </p>
+
+                  <div>
+                    <Label className="text-sm font-medium my-2">Quantity</Label>
+                    <Input
+                      type="number"
+                      min={1}
+                      value={quantity}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
+                    />
+                  </div>
+
+                  <p className="text-sm">
+                    Total:{" "}
+                    <span className="font-semibold">
+                      {event.ticketPrice === 0
+                        ? "Free"
+                        : `$${event.ticketPrice * quantity}`}
+                    </span>
+                  </p>
+                </div>
+
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setOpen(false)}>
+                    Cancel
+                  </Button>
+
+                  <Button
+                    onClick={handleBuy}
+                    className="bg-linear-to-r from-[#3525CD] to-[#831ADA] text-white"
+                  >
+                    Confirm Purchase
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </CardContent>
         </Card>
       </section>

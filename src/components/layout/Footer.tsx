@@ -26,17 +26,20 @@ export default function Footer() {
             <h3 className="font-semibold text-slate-900 mb-4">Platform</h3>
             <ul className="space-y-2 text-sm text-slate-500">
               <li>
-                <Link href="/items" className="hover:text-indigo-600">
+                <Link href="/events" className="hover:text-indigo-600">
                   Events
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  Pricing
+                <Link
+                  href="https://github.com/Utsho11/next-event"
+                  className="hover:text-indigo-600"
+                >
+                  Github
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-indigo-600">
+                <Link href="/features" className="hover:text-indigo-600">
                   Features
                 </Link>
               </li>
@@ -53,13 +56,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-indigo-600">
+                <Link href="/contact" className="hover:text-indigo-600">
                   Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  Careers
                 </Link>
               </li>
             </ul>
@@ -70,12 +68,12 @@ export default function Footer() {
             <h3 className="font-semibold text-slate-900 mb-4">Legal</h3>
             <ul className="space-y-2 text-sm text-slate-500">
               <li>
-                <Link href="#" className="hover:text-indigo-600">
+                <Link href="/privacy" className="hover:text-indigo-600">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-indigo-600">
+                <Link href="/terms" className="hover:text-indigo-600">
                   Terms of Service
                 </Link>
               </li>

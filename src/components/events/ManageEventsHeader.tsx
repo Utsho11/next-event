@@ -3,6 +3,8 @@ import { CalendarCheck, Download, Filter, Ticket, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import SeedButton from "../FakeDataSeeder";
+import type { EventData } from "@/services/event-services";
+import { downloadEventsCSV } from "@/lib/export-events-csv";
 
 const stats = [
   {
@@ -31,7 +33,11 @@ const stats = [
   },
 ];
 
-export default function ManageEventsHeader() {
+export default function ManageEventsHeader({
+  events,
+}: {
+  events: EventData[];
+}) {
   return (
     <section className="px-4 py-8 md:px-8">
       <div className="mx-auto max-w-6xl">
@@ -46,14 +52,13 @@ export default function ManageEventsHeader() {
           </div>
 
           <div className="flex gap-3">
-            <Button variant="outline" className="gap-2 text-violet-600">
-              <Filter className="h-4 w-4" />
-              Filter
-            </Button>
-
-            <Button variant="outline" className="gap-2 text-violet-600">
+            <Button
+              variant="outline"
+              className="gap-2 text-violet-600"
+              onClick={() => downloadEventsCSV(events)}
+            >
               <Download className="h-4 w-4" />
-              Export Report
+              Export Events
             </Button>
 
             <SeedButton />
@@ -65,7 +70,10 @@ export default function ManageEventsHeader() {
             const Icon = stat.icon;
 
             return (
-              <Card key={stat.title} className="rounded-xl border shadow-sm">
+              <Card
+                key={stat.title}
+                className="rounded-xl bg-[#ffffff] shadow-sm"
+              >
                 <CardContent className="p-6">
                   <div className="mb-5 flex items-start justify-between">
                     <div

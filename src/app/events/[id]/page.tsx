@@ -9,6 +9,7 @@ import EventDetails from "@/components/events/EventDetails";
 import { ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import RelatedEvents from "@/components/events/RelatedEvents";
+import LoadingPage from "@/components/shared/LoadingSpinner";
 
 export default function EventDetailsPage() {
   const { id } = useParams();
@@ -35,11 +36,7 @@ export default function EventDetailsPage() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Loading event...</p>
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   if (!event) {

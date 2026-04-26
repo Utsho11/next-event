@@ -1,7 +1,34 @@
-import { categories } from "@/constant/catagories";
-import { Music } from "lucide-react";
-import Image from "next/image";
+import {
+  BriefcaseBusiness,
+  Laptop,
+  Music,
+  Volleyball,
+  GraduationCap,
+} from "lucide-react";
 import Link from "next/link";
+
+export const categories = [
+  {
+    label: "Tech",
+    icon: <Laptop />,
+  },
+  {
+    label: "Music",
+    icon: <Music />,
+  },
+  {
+    label: "Business",
+    icon: <BriefcaseBusiness />,
+  },
+  {
+    label: "Sport",
+    icon: <Volleyball />,
+  },
+  {
+    label: "Education",
+    icon: <GraduationCap />,
+  },
+];
 
 const EventCatagories = () => {
   return (
@@ -13,26 +40,16 @@ const EventCatagories = () => {
         {categories.map((catagory, index) => (
           <div
             key={index}
-            className="bg-[#EFF4FF] flex flex-col items-center justify-center gap-2 p-4 rounded-2xl hover:bg-[#E0E7FF] cursor-pointer"
+            className="bg-[#E0E7FF] flex flex-col items-center justify-center gap-2 p-4 rounded-2xl hover:bg-[#eff4ffec] cursor-pointer"
           >
             <Link
               href={`/events?category=${catagory.label}`}
               className="text-[#464555]"
             >
-              <div className="p-4 bg-[#FFFFFF] w-fit rounded-2xl">
-                {catagory.label === "Music" ? (
-                  <Music size={25} className="text-[#3525CD]" />
-                ) : (
-                  <Image
-                    width={25}
-                    height={20}
-                    src={`/category/${catagory.icon}`}
-                    alt={catagory.label}
-                    className=""
-                  />
-                )}
+              <div className="p-4 bg-[#FFFFFF] w-fit rounded-2xl text-[#3525CD]">
+                {catagory.icon}
               </div>
-              <p>{catagory.label}</p>
+              <p className="text-center mt-2">{catagory.label}</p>
             </Link>
           </div>
         ))}

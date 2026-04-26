@@ -1,5 +1,7 @@
 "use client";
 import EventCard from "@/components/events/EventCard";
+import { categories } from "@/components/home/EventCatagories";
+import LoadingPage from "@/components/shared/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { categories } from "@/constant/catagories";
 import { getEvents, type EventData } from "@/services/event-services";
 import { Trash } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -17,6 +18,7 @@ import { useEffect, useState } from "react";
 
 const Page = () => {
   const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const categoryFromQuery = searchParams.get("category");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(
@@ -29,6 +31,7 @@ const Page = () => {
     const fetchEvents = async () => {
       const data = await getEvents();
       setEvents(data as EventData[]);
+      setLoading(false);
     };
 
     fetchEvents();
@@ -61,6 +64,10 @@ const Page = () => {
 
     return matchesSearch && matchesCategory && matchesPrice;
   });
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="bg-[#E5EEFF] p-4 md:p-8">

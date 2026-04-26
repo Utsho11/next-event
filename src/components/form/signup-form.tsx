@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginWithGoogle, registerUser } from "@/firebase/firebase.auth";
+import { toast } from "sonner";
 
 export function SignupForm({
   className,
@@ -24,26 +25,35 @@ export function SignupForm({
   const [password, setPassword] = useState("");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleRegister = async (e:any) => {
+  const handleRegister = async (e: any) => {
     e.preventDefault();
 
     try {
       await registerUser(email, password);
+      toast.success(
+        <p className="text-green-500">Successfully Created Account.</p>,
+        {
+          description: (
+            <p className="text-gray-400">
+              Signup at: {new Date().toLocaleString()}
+            </p>
+          ),
+        },
+      );
       router.push("/");
     } catch (error) {
       console.log(error);
-      alert("Registration failed");
+      toast.error("Registration failed");
     }
   };
 
-
-   const handleGoogleSignup = async () => {
+  const handleGoogleSignup = async () => {
     try {
       await loginWithGoogle();
       router.push("/");
     } catch (error) {
       console.log(error);
-      alert("Google signup failed");
+      toast.error("Google signup failed");
     }
   };
 
@@ -80,10 +90,11 @@ export function SignupForm({
             id="password"
             type="password"
             required
+            min={6}
             onChange={(e) => setPassword(e.target.value)}
           />
           <FieldDescription>
-            Must be at least 8 characters long.
+            Must be at least 6 characters long.
           </FieldDescription>
         </Field>
         <Field>

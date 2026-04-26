@@ -75,7 +75,7 @@ const HeroSection = () => {
       <div className="w-full md:w-1/2">
         <div className="border-8 w-fit rounded-4xl border-[#F1F5F9]">
           <Image
-            width={500}
+            width={600}
             height={480}
             src="/hero-image.png"
             alt="Hero-image"
