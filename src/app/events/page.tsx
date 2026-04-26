@@ -17,14 +17,13 @@ import { useEffect, useState } from "react";
 
 const Page = () => {
   const searchParams = useSearchParams();
-  const categoryFromQuery = searchParams.get("category"); 
+  const categoryFromQuery = searchParams.get("category");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromQuery||"all");
+  const [selectedCategory, setSelectedCategory] = useState(
+    categoryFromQuery || "all",
+  );
   const [selectedPrice, setSelectedPrice] = useState<string>("0");
   const [events, setEvents] = useState<EventData[]>([]);
-
-   
-  
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -42,28 +41,26 @@ const Page = () => {
   };
 
   const filteredEvents = events.filter((event) => {
-  const search = searchTerm.toLowerCase();
+    const search = searchTerm.toLowerCase();
 
-  // 🔍 Search
-  const matchesSearch =
-    event.eventName.toLowerCase().includes(search) ||
-    event.eventShortDescription.toLowerCase().includes(search) ||
-    event.location.toLowerCase().includes(search);
+    // 🔍 Search
+    const matchesSearch =
+      event.eventName.toLowerCase().includes(search) ||
+      event.eventShortDescription.toLowerCase().includes(search) ||
+      event.location.toLowerCase().includes(search);
 
-  // 📂 Category
-  const matchesCategory =
-    selectedCategory === "all" || event.category === selectedCategory;
+    // 📂 Category
+    const matchesCategory =
+      selectedCategory === "all" || event.category === selectedCategory;
 
-  // 💰 Price
-  const price = Number(event.ticketPrice);
+    // 💰 Price
+    const price = Number(event.ticketPrice);
 
-  const matchesPrice =
-    selectedPrice === "0" || price <= Number(selectedPrice);
+    const matchesPrice =
+      selectedPrice === "0" || price <= Number(selectedPrice);
 
-  return matchesSearch && matchesCategory && matchesPrice;
-});
-
-
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
 
   return (
     <div className="bg-[#E5EEFF] p-4 md:p-8">
@@ -128,11 +125,11 @@ const Page = () => {
           </Button>
         </div>
       </div>
-     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 my-4 md:my-8">
-      {filteredEvents.map((event) => (
-        <EventCard key={event.id} {...event} />
-      ))}
-    </div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 my-4 md:my-8">
+        {filteredEvents.map((event) => (
+          <EventCard key={event.id} {...event} />
+        ))}
+      </div>
     </div>
   );
 };
